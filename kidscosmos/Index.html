@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚀 KidsCosmos – Explore the Universe!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --space-bg: #020818;
+    --nebula1: #1a0533;
+    --nebula2: #0a1a3a;
+    --sun-color: #FDB813;
+    --mercury: #b5b5b5;
+    --venus: #e8cda0;
+    --earth-blue: #4fc3f7;
+    --earth-green: #66bb6a;
+    --mars: #c1440e;
+    --jupiter: #c88b3a;
+    --saturn: #e4d191;
+    --uranus: #7de8e8;
+    --neptune: #3f54ba;
+    --moon: #d4d4d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--space-bg);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🚀%3C/text%3E%3C/svg%3E") 8 8, auto;
+  }
+
+  /* ===== STARFIELD ===== */
+  #starfield {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--dur) ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0%   { opacity: 0.1; transform: scale(0.8); }
+    100% { opacity: 1;   transform: scale(1.2); }
+  }
+
+  /* shooting stars */
+  .shoot {
+    position: fixed;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 6px 2px white;
+    animation: shoot linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes shoot {
+    0%   { opacity: 0; transform: translate(0,0) rotate(-45deg); }
+    10%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(600px, 600px) rotate(-45deg); }
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 40px 20px 0;
+  }
+
+  .hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    color: var(--sun-color);
+    text-shadow: 0 0 30px #fdb81388, 0 0 80px #fdb81344;
+    letter-spacing: 2px;
+    animation: heroGlow 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroGlow {
+    from { text-shadow: 0 0 20px #fdb81388, 0 0 50px #fdb81344; }
+    to   { text-shadow: 0 0 40px #fdb813cc, 0 0 100px #fdb81366, 0 0 160px #fdb81322; }
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    color: #a0cfff;
+    margin-top: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* ===== SOLAR SYSTEM SCENE ===== */
+  .solar-scene {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 700px;
+    margin-top: -20px;
+    overflow: hidden;
+  }
+
+  .solar-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* SUN */
+  .sun {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff7aa, #FDB813 40%, #f77f00 80%, #c43800);
+    box-shadow:
+      0 0 30px 15px #fdb81388,
+      0 0 80px 30px #fdb81344,
+      0 0 150px 50px #fdb81322;
+    animation: sunPulse 4s ease-in-out infinite alternate;
+    position: relative;
+    z-index: 5;
+  }
+
+  .sun::after {
+    content: '☀️';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3.5rem;
+    filter: drop-shadow(0 0 8px #fdb813);
+  }
+
+  @keyframes sunPulse {
+    from { box-shadow: 0 0 30px 15px #fdb81388, 0 0 80px 30px #fdb81344; }
+    to   { box-shadow: 0 0 50px 25px #fdb813aa, 0 0 120px 50px #fdb81366; }
+  }
+
+  /* ORBIT RINGS */
+  .orbit {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08);
+    top: 50%; left: 50%;
+    transform-origin: center center;
+  }
+
+  /* PLANET + ORBIT wrapper */
+  .orbit-wrapper {
+    position: absolute;
+    top: 50%; left: 50%;
+    border-radius: 50%;
+    animation: orbitSpin linear infinite;
+    transform-origin: 0 0;
+  }
+
+  .orbit-wrapper::before {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 1px dashed rgba(255,255,255,0.07);
+  }
+
+  @keyframes orbitSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* PLANET BASE */
+  .planet {
+    position: absolute;
+    border-radius: 50%;
+    animation: selfRotate linear infinite;
+    cursor: pointer;
+    transition: filter 0.2s;
+    transform-origin: center;
+  }
+
+  .planet:hover { filter: brightness(1.4) drop-shadow(0 0 12px white); }
+
+  @keyframes selfRotate {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* ---- Individual Planets ---- */
+  /* Mercury */
+  .mercury-wrap { animation-duration: 6s; }
+  .mercury {
+    width: 14px; height: 14px;
+    background: radial-gradient(circle at 35% 30%, #ddd, #b5b5b5 60%, #888);
+    box-shadow: inset -3px -3px 6px rgba(0,0,0,0.5);
+    margin-left: -7px; margin-top: -7px;
+    animation-duration: 4s;
+  }
+
+  /* Venus */
+  .venus-wrap { animation-duration: 10s; }
+  .venus {
+    width: 22px; height: 22px;
+    background: radial-gradient(circle at 35% 30%, #fff8dc, #e8cda0 50%, #c8975a);
+    box-shadow: inset -4px -4px 10px rgba(0,0,0,0.4), 0 0 8px #e8cda044;
+    margin-left: -11px; margin-top: -11px;
+    animation-duration: 6s;
+  }
+
+  /* Earth */
+  .earth-wrap { animation-duration: 16s; }
+  .earth {
+    width: 28px; height: 28px;
+    background:
+      radial-gradient(ellipse at 40% 35%, rgba(255,255,255,0.7) 0%, transparent 30%),
+      radial-gradient(circle at 35% 30%, #a8e6cf, #4fc3f7 30%, #1565c0 60%, #0d47a1);
+    box-shadow: inset -5px -5px 12px rgba(0,0,0,0.45), 0 0 10px #4fc3f744;
+    margin-left: -14px; margin-top: -14px;
+    animation-duration: 5s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .earth::before {
+    content: '';
+    position: absolute;
+    width: 60%; height: 40%;
+    background: #66bb6a;
+    border-radius: 60% 40% 50% 60%;
+    top: 20%; left: 15%;
+    transform: rotate(-20deg);
+  }
+
+  .earth::after {
+    content: '';
+    position: absolute;
+    width: 35%; height: 25%;
+    background: #4caf50;
+    border-radius: 50%;
+    bottom: 20%; right: 10%;
+  }
+
+  /* Moon orbiting earth */
+  .moon-orbit {
+    position: absolute;
+    width: 52px; height: 52px;
+    top: 50%; left: 50%;
+    margin-left: -26px; margin-top: -26px;
+    animation: orbitSpin 3s linear infinite;
+    pointer-events: none;
+  }
+
+  .moon {
+    width: 8px; height: 8px;
+    background: radial-gradient(circle at 35% 30%, #f0f0f0, #d4d4d4 60%, #aaa);
+    border-radius: 50%;
+    position: absolute;
+    top: -4px; left: 50%;
+    margin-left: -4px;
+    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.4);
+    animation: none !important;
+  }
+
+  /* Mars */
+  .mars-wrap { animation-duration: 26s; }
+  .mars {
+    width: 20px; height: 20px;
+    background: radial-gradient(circle at 35% 30%, #e87060, #c1440e 55%, #8b2200);
+    box-shadow: inset -4px -4px 10px rgba(0,0,0,0.5), 0 0 8px #c1440e44;
+    margin-left: -10px; margin-top: -10px;
+    animation-duration: 7s;
+  }
+
+  /* Jupiter */
+  .jupiter-wrap { animation-duration: 42s; }
+  .jupiter {
+    width: 55px; height: 55px;
+    background:
+      repeating-linear-gradient(
+        180deg,
+        #c88b3a 0px, #c88b3a 6px,
+        #e8c57a 6px, #e8c57a 10px,
+        #b06020 10px, #b06020 16px,
+        #d4a860 16px, #d4a860 20px
+      );
+    border-radius: 50%;
+    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.4), 0 0 15px #c88b3a44;
+    margin-left: -27px; margin-top: -27px;
+    animation-duration: 2s;
+    overflow: hidden;
+  }
+
+  .jupiter::before {
+    content: '';
+    position: absolute;
+    width: 45%; height: 20%;
+    background: rgba(180, 80, 20, 0.7);
+    border-radius: 50%;
+    top: 38%; right: 5%;
+  }
+
+  /* Saturn */
+  .saturn-wrap { animation-duration: 60s; }
+  .saturn-container {
+    position: absolute;
+    width: 80px; height: 80px;
+    margin-left: -40px; margin-top: -40px;
+  }
+
+  .saturn {
+    width: 46px; height: 46px;
+    background:
+      repeating-linear-gradient(
+        160deg,
+        #e4d191 0px, #e4d191 5px,
+        #c8a840 5px, #c8a840 9px,
+        #d4bc70 9px, #d4bc70 13px
+      );
+    border-radius: 50%;
+    box-shadow: inset -8px -8px 16px rgba(0,0,0,0.4);
+    position: absolute;
+    top: 50%; left: 50%;
+    margin-left: -23px; margin-top: -23px;
+    animation: selfRotate 3s linear infinite;
+    z-index: 2;
+  }
+
+  .saturn-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    border-radius: 50%;
+    border-style: solid;
+    transform: translate(-50%, -50%) rotateX(75deg);
+    pointer-events: none;
+  }
+
+  .ring1 { width: 75px; height: 25px; border-width: 3px; border-color: rgba(220,190,120,0.6); margin-top: 2px; }
+  .ring2 { width: 90px; height: 30px; border-width: 2px; border-color: rgba(200,170,100,0.4); margin-top: 2px; }
+
+  /* Uranus */
+  .uranus-wrap { animation-duration: 84s; }
+  .uranus {
+    width: 38px; height: 38px;
+    background: radial-gradient(circle at 35% 30%, #b0f4f4, #7de8e8 50%, #40b0b0);
+    box-shadow: inset -7px -7px 14px rgba(0,0,0,0.35), 0 0 12px #7de8e866;
+    margin-left: -19px; margin-top: -19px;
+    animation-duration: 4s;
+  }
+
+  /* Neptune */
+  .neptune-wrap { animation-duration: 120s; }
+  .neptune {
+    width: 34px; height: 34px;
+    background: radial-gradient(circle at 35% 30%, #6080e0, #3f54ba 55%, #1a2880);
+    box-shadow: inset -6px -6px 12px rgba(0,0,0,0.45), 0 0 12px #3f54ba66;
+    margin-left: -17px; margin-top: -17px;
+    animation-duration: 5s;
+  }
+
+  /* ===== ORBIT POSITIONING ===== */
+  /* Each orbit-wrapper: positioned at sun center, radius pushed via left margin trick */
+  /* We use a CSS custom property for orbit radius */
+  .orbit-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    border-radius: 50%;
+    border: 1px dashed rgba(255,255,255,0.08);
+    transform: translate(-50%, -50%);
+  }
+
+  /* ===== INFO CARDS SECTION ===== */
+  .section-title {
+    font-family: 'Fredoka One', cursive;
+    color: var(--sun-color);
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    text-align: center;
+    padding: 30px 20px 10px;
+    position: relative;
+    z-index: 10;
+    text-shadow: 0 0 20px #fdb81355;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    padding: 20px 40px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  .planet-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 28px 24px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .planet-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .planet-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, var(--card-glow) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .planet-card:hover::before { opacity: 1; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-planet-visual {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    margin: 0 auto 18px;
+    position: relative;
+    animation: slowSpin 8s linear infinite;
+  }
+
+  @keyframes slowSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .card-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .card-emoji { font-size: 2rem; text-align: center; display: block; margin-bottom: 8px; }
+
+  .card-fact {
+    color: #b0c8f0;
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .card-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    margin-top: 10px;
+    color: var(--sun-color);
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ===== EARTH SECTION ===== */
+  .earth-section {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 40px 20px;
+    background: radial-gradient(ellipse at center, rgba(79,195,247,0.05) 0%, transparent 70%);
+  }
+
+  .big-earth-container {
+    position: relative;
+    width: 200px; height: 200px;
+    margin: 30px auto;
+  }
+
+  .big-earth {
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background:
+      radial-gradient(ellipse at 40% 35%, rgba(255,255,255,0.5) 0%, transparent 25%),
+      radial-gradient(circle, #1565c0 0%, #0d47a1 100%);
+    box-shadow:
+      inset -30px -30px 60px rgba(0,0,0,0.5),
+      0 0 40px #4fc3f766,
+      0 0 100px #4fc3f722;
+    animation: bigEarthSpin 20s linear infinite;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes bigEarthSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .continent { position: absolute; background: #66bb6a; border-radius: 50%; }
+  .c1 { width: 60px; height: 80px; top: 25%; left: 18%; transform: rotate(-20deg); border-radius: 50% 40% 60% 50%; }
+  .c2 { width: 45px; height: 70px; top: 30%; left: 48%; transform: rotate(10deg); border-radius: 40% 60% 50% 55%; }
+  .c3 { width: 50px; height: 50px; top: 55%; left: 30%; border-radius: 60% 40% 55% 45%; background: #4caf50; }
+  .c4 { width: 35px; height: 45px; top: 15%; left: 65%; transform: rotate(30deg); border-radius: 50% 60% 40% 55%; }
+  .c5 { width: 40px; height: 30px; top: 70%; left: 55%; border-radius: 50%; background: #388e3c; }
+  .cloud1, .cloud2, .cloud3 {
+    position: absolute; background: rgba(255,255,255,0.6);
+    border-radius: 50%; filter: blur(4px);
+  }
+  .cloud1 { width: 50px; height: 18px; top: 20%; left: 10%; }
+  .cloud2 { width: 40px; height: 14px; top: 50%; left: 60%; }
+  .cloud3 { width: 35px; height: 12px; top: 75%; left: 20%; }
+
+  .big-moon-orbit {
+    position: absolute;
+    width: 260px; height: 260px;
+    top: 50%; left: 50%;
+    margin-left: -130px; margin-top: -130px;
+    animation: orbitSpin 8s linear infinite;
+    border-radius: 50%;
+    border: 1px dashed rgba(255,255,255,0.15);
+    pointer-events: none;
+  }
+
+  .big-moon {
+    width: 40px; height: 40px;
+    background: radial-gradient(circle at 35% 30%, #f0f0f0, #d4d4d4 60%, #aaa);
+    border-radius: 50%;
+    position: absolute;
+    top: -20px; left: 50%;
+    margin-left: -20px;
+    box-shadow: inset -6px -6px 14px rgba(0,0,0,0.4), 0 0 10px rgba(255,255,255,0.3);
+  }
+
+  .earth-facts {
+    display: flex; flex-wrap: wrap;
+    justify-content: center; gap: 16px;
+    margin-top: 20px;
+    padding: 0 20px;
+  }
+
+  .earth-fact-chip {
+    background: rgba(79,195,247,0.1);
+    border: 1px solid rgba(79,195,247,0.3);
+    border-radius: 50px;
+    padding: 10px 22px;
+    color: #a0dfff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .earth-fact-chip:hover {
+    transform: scale(1.08);
+    background: rgba(79,195,247,0.2);
+  }
+
+  /* ===== SKY SECTION ===== */
+  .sky-section {
+    position: relative; z-index: 10;
+    padding: 40px 20px 60px;
+    text-align: center;
+  }
+
+  .sky-box {
+    max-width: 900px;
+    margin: 30px auto 0;
+    background: linear-gradient(180deg, #000428 0%, #004e92 60%, #ff6b35 100%);
+    border-radius: 30px;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(0,78,146,0.4);
+  }
+
+  .sky-stars { position: absolute; width: 100%; height: 60%; top: 0; }
+  .sky-star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--dur) ease-in-out infinite alternate;
+  }
+
+  .horizon-sun {
+    width: 80px; height: 80px;
+    background: radial-gradient(circle, #fff7aa, #FDB813 50%, #ff6b35);
+    border-radius: 50%;
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 40px 20px rgba(253,184,19,0.5);
+  }
+
+  .sky-cloud {
+    position: absolute;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50px;
+    filter: blur(8px);
+    animation: cloudDrift linear infinite;
+  }
+
+  @keyframes cloudDrift {
+    from { transform: translateX(-150px); }
+    to   { transform: translateX(calc(100vw + 150px)); }
+  }
+
+  .sky-label { position: absolute; color: rgba(255,255,255,0.8); font-weight: 700; font-size: 0.85rem; }
+
+  /* ===== CONSTELLATION ===== */
+  .constellation-section {
+    position: relative; z-index: 10;
+    padding: 20px 20px 60px;
+    text-align: center;
+  }
+
+  canvas#constellation-canvas {
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+    max-width: 100%;
+    cursor: crosshair;
+  }
+
+  .canvas-hint {
+    color: #6090c0;
+    font-size: 0.85rem;
+    margin-top: 10px;
+  }
+
+  /* ===== QUIZ SECTION ===== */
+  .quiz-section {
+    position: relative; z-index: 10;
+    padding: 20px 40px 80px;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .quiz-box {
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 28px;
+    padding: 36px;
+    backdrop-filter: blur(10px);
+  }
+
+  .quiz-question {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: #c0e0ff;
+    margin-bottom: 24px;
+    line-height: 1.4;
+  }
+
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .quiz-btn {
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 14px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .quiz-btn:hover { background: rgba(255,255,255,0.15); transform: scale(1.04); }
+  .quiz-btn.correct { background: rgba(102,187,106,0.3); border-color: #66bb6a; }
+  .quiz-btn.wrong   { background: rgba(229,115,115,0.3); border-color: #e57373; }
+
+  .quiz-feedback {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-top: 10px;
+    min-height: 36px;
+  }
+
+  .quiz-score {
+    color: var(--sun-color);
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    margin-top: 10px;
+  }
+
+  .next-btn {
+    margin-top: 16px;
+    background: linear-gradient(135deg, #FDB813, #f77f00);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 32px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: #1a0a00;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: none;
+  }
+
+  .next-btn:hover { transform: scale(1.06); box-shadow: 0 8px 30px rgba(253,184,19,0.4); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 30px;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  footer span { color: #fdb813; }
+
+  /* ===== NEBULA BG ===== */
+  .nebula {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    animation: nebulaPulse 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes nebulaPulse {
+    from { opacity: 0.3; transform: scale(1); }
+    to   { opacity: 0.6; transform: scale(1.1); }
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(6px);
+  }
+
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: linear-gradient(135deg, #0a1a3a, #1a0533);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 28px;
+    padding: 40px;
+    max-width: 440px;
+    width: 90%;
+    text-align: center;
+    transform: scale(0.8);
+    transition: transform 0.3s;
+    position: relative;
+  }
+
+  .modal-overlay.active .modal { transform: scale(1); }
+
+  .modal-close {
+    position: absolute; top: 16px; right: 20px;
+    background: none; border: none; color: white;
+    font-size: 1.5rem; cursor: pointer; opacity: 0.6;
+  }
+
+  .modal-close:hover { opacity: 1; }
+
+  .modal h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .modal p { color: #a0cfff; line-height: 1.7; font-size: 0.95rem; }
+
+  .modal-emoji { font-size: 4rem; margin-bottom: 16px; display: block; }
+
+  .modal-stat {
+    display: flex; justify-content: space-between;
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #c0d8f0;
+  }
+
+  .modal-stat strong { color: var(--sun-color); }
+</style>
+</head>
+<body>
+
+<!-- Nebula background blobs -->
+<div class="nebula" style="width:500px;height:500px;top:10%;left:-10%;background:radial-gradient(circle,rgba(100,0,180,0.3),transparent);"></div>
+<div class="nebula" style="width:600px;height:600px;top:40%;right:-15%;background:radial-gradient(circle,rgba(0,50,180,0.25),transparent);animation-delay:-4s"></div>
+<div class="nebula" style="width:400px;height:400px;bottom:10%;left:30%;background:radial-gradient(circle,rgba(0,100,150,0.2),transparent);animation-delay:-2s"></div>
+
+<!-- Starfield -->
+<div id="starfield"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>🌌 KidsCosmos</h1>
+  <p>✨ Explore Stars, Planets & the Amazing Universe! ✨</p>
+</div>
+
+<!-- SOLAR SYSTEM -->
+<div class="solar-scene" id="solarScene">
+  <div class="solar-center" id="solarCenter">
+    <div class="sun"></div>
+  </div>
+</div>
+
+<!-- PLANET CARDS -->
+<h2 class="section-title">🪐 Meet the Planets!</h2>
+<div class="cards-grid" id="cardsGrid"></div>
+
+<!-- EARTH SECTION -->
+<div class="earth-section">
+  <h2 class="section-title">🌍 Our Beautiful Earth</h2>
+  <div class="big-earth-container">
+    <div class="big-earth">
+      <div class="continent c1"></div>
+      <div class="continent c2"></div>
+      <div class="continent c3"></div>
+      <div class="continent c4"></div>
+      <div class="continent c5"></div>
+      <div class="cloud1"></div>
+      <div class="cloud2"></div>
+      <div class="cloud3"></div>
+    </div>
+    <div class="big-moon-orbit">
+      <div class="big-moon"></div>
+    </div>
+  </div>
+  <div class="earth-facts">
+    <div class="earth-fact-chip">🌊 71% Water</div>
+    <div class="earth-fact-chip">🌡️ Perfect Temperature</div>
+    <div class="earth-fact-chip">🌬️ Has Oxygen</div>
+    <div class="earth-fact-chip">🌙 1 Moon</div>
+    <div class="earth-fact-chip">🔄 Spins Every 24 Hours</div>
+    <div class="earth-fact-chip">☀️ 1 Year = 365.25 Days</div>
+    <div class="earth-fact-chip">🦁 Millions of Animals</div>
+    <div class="earth-fact-chip">🌿 Only Life-Friendly Planet!</div>
+  </div>
+</div>
+
+<!-- SKY SECTION -->
+<div class="sky-section">
+  <h2 class="section-title">🌅 Our Amazing Sky</h2>
+  <div class="sky-box" id="skyBox">
+    <div class="sky-stars" id="skyStars"></div>
+    <div class="horizon-sun"></div>
+  </div>
+  <p style="color:#6090c0;margin-top:16px;font-size:0.9rem;">The sky changes from day to night — from blue to orange to deep black full of stars! 🌟</p>
+</div>
+
+<!-- CONSTELLATION CANVAS -->
+<div class="constellation-section">
+  <h2 class="section-title">⭐ Draw Your Own Constellation!</h2>
+  <canvas id="constellation-canvas" width="800" height="300"></canvas>
+  <p class="canvas-hint">Click to place stars, they'll connect automatically! Double-click to clear.</p>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-section">
+  <h2 class="section-title">🧠 Space Quiz!</h2>
+  <div class="quiz-box">
+    <div class="quiz-question" id="quizQuestion"></div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <div class="quiz-score" id="quizScore"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question ➡️</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  Made with <span>♥</span> for young space explorers 🚀 | <span>KidsCosmos</span>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <span class="modal-emoji" id="modalEmoji"></span>
+    <h2 id="modalName"></h2>
+    <p id="modalDesc"></p>
+    <div id="modalStats"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// STARFIELD
+// ============================================================
+const starfield = document.getElementById('starfield');
+for (let i = 0; i < 220; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 3 + 0.5;
+  s.style.cssText = `
+    width:${size}px; height:${size}px;
+    top:${Math.random()*100}%;
+    left:${Math.random()*100}%;
+    --dur:${1.5+Math.random()*4}s;
+    animation-delay:${Math.random()*5}s;
+  `;
+  starfield.appendChild(s);
+}
+
+// Shooting stars
+for (let i = 0; i < 6; i++) {
+  const sh = document.createElement('div');
+  sh.className = 'shoot';
+  sh.style.cssText = `
+    top:${Math.random()*50}%;
+    left:${Math.random()*60}%;
+    animation-duration:${4+Math.random()*8}s;
+    animation-delay:${Math.random()*15}s;
+  `;
+  document.body.appendChild(sh);
+}
+
+// ============================================================
+// PLANET DATA
+// ============================================================
+const planets = [
+  {
+    name: 'Mercury', emoji: '⚫',
+    color: '#b5b5b5', glow: 'rgba(181,181,181,0.1)',
+    orbitR: 80, orbitDur: 6, selfDur: 4,
+    size: 14,
+    desc: 'Mercury is the smallest planet and closest to the Sun! It has no air and gets super hot during the day and freezing cold at night.',
+    facts: { 'Distance from Sun': '57.9M km', 'Day Length': '59 Earth days', 'Moons': '0', 'Temperature': '-180°C to 430°C' }
+  },
+  {
+    name: 'Venus', emoji: '🟡',
+    color: '#e8cda0', glow: 'rgba(232,205,160,0.1)',
+    orbitR: 120, orbitDur: 10, selfDur: 6,
+    size: 22,
+    desc: 'Venus is the hottest planet — even hotter than Mercury! It\'s covered in thick clouds of acid and spins backwards compared to most planets.',
+    facts: { 'Distance from Sun': '108M km', 'Day Length': '243 Earth days', 'Moons': '0', 'Temperature': '465°C' }
+  },
+  {
+    name: 'Earth', emoji: '🌍',
+    color: '#4fc3f7', glow: 'rgba(79,195,247,0.1)',
+    orbitR: 165, orbitDur: 16, selfDur: 5,
+    size: 28,
+    desc: 'Our beautiful home! Earth is the only planet known to have life. It has liquid water, breathable air, and the perfect temperature for living things.',
+    facts: { 'Distance from Sun': '149.6M km', 'Day Length': '24 hours', 'Moons': '1', 'Temperature': '-88°C to 58°C' }
+  },
+  {
+    name: 'Mars', emoji: '🔴',
+    color: '#c1440e', glow: 'rgba(193,68,14,0.1)',
+    orbitR: 215, orbitDur: 26, selfDur: 7,
+    size: 20,
+    desc: 'Mars is the Red Planet! It has the biggest volcano in the solar system called Olympus Mons. Scientists are exploring it with robots called rovers!',
+    facts: { 'Distance from Sun': '227.9M km', 'Day Length': '24.6 hours', 'Moons': '2', 'Temperature': '-140°C to 20°C' }
+  },
+  {
+    name: 'Jupiter', emoji: '🟠',
+    color: '#c88b3a', glow: 'rgba(200,139,58,0.12)',
+    orbitR: 290, orbitDur: 42, selfDur: 2,
+    size: 55,
+    desc: 'Jupiter is the BIGGEST planet — over 1,300 Earths could fit inside it! It has a giant storm called the Great Red Spot that has been raging for over 350 years!',
+    facts: { 'Distance from Sun': '778.5M km', 'Day Length': '9.9 hours', 'Moons': '95', 'Mass vs Earth': '318x heavier' }
+  },
+  {
+    name: 'Saturn', emoji: '🪐',
+    color: '#e4d191', glow: 'rgba(228,209,145,0.1)',
+    orbitR: 370, orbitDur: 60, selfDur: 3,
+    size: 46,
+    desc: 'Saturn has the most beautiful rings in the solar system made of ice and rock! It\'s so light that it could float on water (if there was a bathtub big enough)!',
+    facts: { 'Distance from Sun': '1.43B km', 'Day Length': '10.7 hours', 'Moons': '146', 'Ring Width': '282,000 km wide' }
+  },
+  {
+    name: 'Uranus', emoji: '🔵',
+    color: '#7de8e8', glow: 'rgba(125,232,232,0.1)',
+    orbitR: 440, orbitDur: 84, selfDur: 4,
+    size: 38,
+    desc: 'Uranus spins on its side like a rolling ball! It\'s an ice giant and appears blue-green. It\'s so far away that it takes 84 Earth years to orbit the Sun!',
+    facts: { 'Distance from Sun': '2.87B km', 'Day Length': '17.2 hours', 'Moons': '28', 'Temperature': '-224°C' }
+  },
+  {
+    name: 'Neptune', emoji: '🫐',
+    color: '#3f54ba', glow: 'rgba(63,84,186,0.1)',
+    orbitR: 510, orbitDur: 120, selfDur: 5,
+    size: 34,
+    desc: 'Neptune is the farthest planet from the Sun! It has the strongest winds in the solar system — over 2,100 km/h! It takes 165 Earth years to orbit the Sun once!',
+    facts: { 'Distance from Sun': '4.50B km', 'Day Length': '16.1 hours', 'Moons': '16', 'Wind Speed': '2,100 km/h' }
+  }
+];
+
+// ============================================================
+// SOLAR SYSTEM SCENE (SVG-based orbits + CSS planet divs)
+// ============================================================
+const solarCenter = document.getElementById('solarCenter');
+const solarScene = document.getElementById('solarScene');
+const sceneH = 700;
+
+// Draw orbit rings as CSS divs
+planets.forEach(p => {
+  const ring = document.createElement('div');
+  ring.className = 'orbit-ring';
+  const d = p.orbitR * 2;
+  ring.style.cssText = `width:${d}px;height:${d}px;margin-left:-${p.orbitR}px;margin-top:-${p.orbitR}px;`;
+  solarCenter.appendChild(ring);
+});
+
+// Place orbit-wrappers
+planets.forEach((p, i) => {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'orbit-wrapper';
+  wrapper.style.cssText = `
+    animation-duration:${p.orbitDur}s;
+    animation-delay:${-Math.random()*p.orbitDur}s;
+    width:0; height:0;
+  `;
+
+  if (p.name === 'Saturn') {
+    const container = document.createElement('div');
+    container.className = 'saturn-container';
+    container.style.cssText = `
+      position:absolute;
+      left:${p.orbitR}px;
+      top:0px;
+      margin-left:-40px;
+      margin-top:-40px;
+    `;
+    const pl = document.createElement('div');
+    pl.className = 'planet saturn';
+    pl.style.cssText = `animation-duration:${p.selfDur}s;`;
+    pl.onclick = () => openModal(p);
+
+    const r1 = document.createElement('div');
+    r1.className = 'saturn-ring ring1';
+    const r2 = document.createElement('div');
+    r2.className = 'saturn-ring ring2';
+
+    container.appendChild(r2);
+    container.appendChild(pl);
+    container.appendChild(r1);
+    wrapper.appendChild(container);
+
+    // Counter-rotate so saturn stays upright-ish visually
+    pl.style.animation = `selfRotate ${p.selfDur}s linear infinite`;
+  } else if (p.name === 'Earth') {
+    const pl = document.createElement('div');
+    pl.className = 'planet earth';
+    pl.style.cssText = `
+      position:absolute;
+      left:${p.orbitR}px;top:0px;
+      animation-duration:${p.selfDur}s;
+    `;
+    pl.onclick = () => openModal(p);
+
+    // Moon orbit around earth
+    const moonOrbit = document.createElement('div');
+    moonOrbit.className = 'moon-orbit';
+    const moon = document.createElement('div');
+    moon.className = 'moon';
+    moonOrbit.appendChild(moon);
+    pl.appendChild(moonOrbit);
+
+    wrapper.appendChild(pl);
+  } else {
+    const pl = document.createElement('div');
+    pl.className = `planet`;
+    pl.style.cssText = `
+      position:absolute;
+      left:${p.orbitR}px; top:0px;
+      width:${p.size}px; height:${p.size}px;
+      background: radial-gradient(circle at 35% 30%, white, ${p.color} 50%, color-mix(in srgb, ${p.color} 60%, black));
+      box-shadow: inset -${p.size*0.18}px -${p.size*0.18}px ${p.size*0.4}px rgba(0,0,0,0.5), 0 0 ${p.size*0.3}px ${p.color}44;
+      margin-left:-${p.size/2}px; margin-top:-${p.size/2}px;
+      animation-duration:${p.selfDur}s;
+    `;
+    pl.onclick = () => openModal(p);
+    wrapper.appendChild(pl);
+  }
+
+  solarCenter.appendChild(wrapper);
+});
+
+// ============================================================
+// PLANET CARDS
+// ============================================================
+const grid = document.getElementById('cardsGrid');
+
+const cardStyles = {
+  'Mercury': { bg: 'linear-gradient(135deg,#2a2a2a,#3a3a3a)', name: '#ccc' },
+  'Venus':   { bg: 'linear-gradient(135deg,#2a200a,#3a2e0a)', name: '#e8d080' },
+  'Earth':   { bg: 'linear-gradient(135deg,#0a1a2a,#0a2a3a)', name: '#4fc3f7' },
+  'Mars':    { bg: 'linear-gradient(135deg,#2a0a00,#3a1200)', name: '#e87060' },
+  'Jupiter': { bg: 'linear-gradient(135deg,#2a1800,#3a2200)', name: '#c88b3a' },
+  'Saturn':  { bg: 'linear-gradient(135deg,#2a2000,#3a2e00)', name: '#e4d191' },
+  'Uranus':  { bg: 'linear-gradient(135deg,#003a3a,#004a4a)', name: '#7de8e8' },
+  'Neptune': { bg: 'linear-gradient(135deg,#00103a,#001a5a)', name: '#6080e8' },
+};
+
+const shortFacts = {
+  'Mercury': 'The fastest planet — zips around the Sun in just 88 days! 🏃',
+  'Venus':   'Hottest planet in the solar system at 465°C! 🔥',
+  'Earth':   'The only planet with life, liquid oceans & a cozy atmosphere! 🌊',
+  'Mars':    'Has the tallest volcano in the solar system — Olympus Mons! 🌋',
+  'Jupiter': 'Its Great Red Spot is a storm bigger than Earth! 🌀',
+  'Saturn':  'Its rings are made of billions of ice chunks & rocks! 💫',
+  'Uranus':  'Spins completely sideways — like a rolling ball! 🎱',
+  'Neptune': 'Has the fastest winds in the solar system! 🌪️',
+};
+
+planets.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'planet-card';
+  card.style.cssText = `
+    background:${cardStyles[p.name].bg};
+    --card-glow:${p.glow};
+    animation-delay:${i*0.1}s;
+    border-color:${p.color}33;
+  `;
+  card.onclick = () => openModal(p);
+
+  // Visual
+  let visual = '';
+  if (p.name === 'Saturn') {
+    visual = `<div style="width:70px;height:70px;position:relative;margin:0 auto 18px;">
+      <div style="width:46px;height:46px;background:radial-gradient(circle at 35% 30%,#fff7cc,${p.color} 50%,#9a7020);border-radius:50%;position:absolute;top:50%;left:50%;margin:-23px 0 0 -23px;box-shadow:inset -8px -8px 16px rgba(0,0,0,0.4);animation:slowSpin 8s linear infinite;"></div>
+      <div style="position:absolute;top:50%;left:50%;width:72px;height:20px;border:3px solid rgba(220,190,120,0.5);border-radius:50%;transform:translate(-50%,-50%) rotateX(75deg);margin-top:2px;"></div>
+    </div>`;
+  } else if (p.name === 'Earth') {
+    visual = `<div style="width:70px;height:70px;background:radial-gradient(circle at 35% 30%,#a8e6cf,#4fc3f7 30%,#1565c0);border-radius:50%;margin:0 auto 18px;box-shadow:inset -12px -12px 24px rgba(0,0,0,0.45),0 0 20px #4fc3f744;animation:slowSpin 8s linear infinite;overflow:hidden;position:relative;">
+      <div style="position:absolute;width:40%;height:50%;background:#66bb6a;border-radius:60% 40% 50% 60%;top:20%;left:15%;transform:rotate(-20deg);"></div>
+      <div style="position:absolute;width:30%;height:30%;background:#4caf50;border-radius:50%;bottom:20%;right:10%;"></div>
+    </div>`;
+  } else if (p.name === 'Jupiter') {
+    visual = `<div style="width:70px;height:70px;background:repeating-linear-gradient(180deg,#c88b3a 0,#c88b3a 8px,#e8c57a 8px,#e8c57a 13px,#b06020 13px,#b06020 19px,#d4a860 19px,#d4a860 24px);border-radius:50%;margin:0 auto 18px;box-shadow:inset -12px -12px 24px rgba(0,0,0,0.4),0 0 15px #c88b3a44;animation:slowSpin 8s linear infinite;overflow:hidden;position:relative;">
+      <div style="position:absolute;width:40%;height:20%;background:rgba(150,60,10,0.7);border-radius:50%;top:40%;right:5%;"></div>
+    </div>`;
+  } else {
+    visual = `<div style="width:70px;height:70px;background:radial-gradient(circle at 35% 30%,white,${p.color} 40%,color-mix(in srgb,${p.color} 60%,black));border-radius:50%;margin:0 auto 18px;box-shadow:inset -12px -12px 24px rgba(0,0,0,0.4),0 0 15px ${p.color}44;animation:slowSpin 8s linear infinite;"></div>`;
+  }
+
+  card.innerHTML = `
+    ${visual}
+    <div class="card-name" style="color:${cardStyles[p.name].name}">${p.emoji} ${p.name}</div>
+    <p class="card-fact">${shortFacts[p.name]}</p>
+    <div class="card-badge">Tap to explore! 🔭</div>
+  `;
+  grid.appendChild(card);
+});
+
+// ============================================================
+// SKY BOX STARS
+// ============================================================
+const skyStars = document.getElementById('skyStars');
+for (let i = 0; i < 60; i++) {
+  const s = document.createElement('div');
+  s.className = 'sky-star';
+  const size = Math.random() * 2.5 + 0.5;
+  s.style.cssText = `
+    width:${size}px;height:${size}px;
+    top:${Math.random()*90}%;left:${Math.random()*100}%;
+    --dur:${1+Math.random()*3}s;
+    animation-delay:${Math.random()*4}s;
+  `;
+  skyStars.appendChild(s);
+}
+
+// Clouds in sky
+for (let i = 0; i < 4; i++) {
+  const c = document.createElement('div');
+  c.className = 'sky-cloud';
+  c.style.cssText = `
+    width:${80+Math.random()*120}px;
+    height:${20+Math.random()*30}px;
+    top:${20+Math.random()*40}%;
+    animation-duration:${20+Math.random()*20}s;
+    animation-delay:${-Math.random()*30}s;
+    opacity:${0.3+Math.random()*0.4};
+  `;
+  document.getElementById('skyBox').appendChild(c);
+}
+
+// ============================================================
+// CONSTELLATION CANVAS
+// ============================================================
+const canvas = document.getElementById('constellation-canvas');
+const ctx = canvas.getContext('2d');
+const conPoints = [];
+
+// Background stars
+const bgStars = [];
+for (let i = 0; i < 80; i++) {
+  bgStars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.3,
+    a: Math.random()
+  });
+}
+
+function drawCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // bg
+  ctx.fillStyle = 'rgba(2,8,24,0.95)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // bg stars
+  bgStars.forEach(s => {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${s.a})`;
+    ctx.fill();
+  });
+
+  // Lines
+  if (conPoints.length > 1) {
+    ctx.strokeStyle = 'rgba(100,180,255,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(conPoints[0].x, conPoints[0].y);
+    conPoints.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.stroke();
+  }
+
+  // Stars
+  conPoints.forEach((p, i) => {
+    // Glow
+    const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 14);
+    g.addColorStop(0, 'rgba(200,230,255,0.8)');
+    g.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 14, 0, Math.PI * 2);
+    ctx.fillStyle = g;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+
+    // Label
+    ctx.fillStyle = 'rgba(180,220,255,0.8)';
+    ctx.font = '11px Nunito';
+    ctx.fillText(`★ ${i+1}`, p.x + 7, p.y - 7);
+  });
+
+  if (conPoints.length === 0) {
+    ctx.fillStyle = 'rgba(100,150,200,0.4)';
+    ctx.font = '16px Nunito';
+    ctx.textAlign = 'center';
+    ctx.fillText('✨ Click anywhere to add stars and make your own constellation!', canvas.width/2, canvas.height/2);
+    ctx.textAlign = 'left';
+  }
+}
+
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  conPoints.push({
+    x: (e.clientX - rect.left) * scaleX,
+    y: (e.clientY - rect.top)  * scaleY
+  });
+  drawCanvas();
+});
+
+canvas.addEventListener('dblclick', () => {
+  conPoints.length = 0;
+  drawCanvas();
+});
+
+// Twinkle background stars
+setInterval(() => {
+  bgStars.forEach(s => { s.a = 0.2 + Math.random() * 0.8; });
+  drawCanvas();
+}, 1500);
+
+drawCanvas();
+
+// ============================================================
+// QUIZ
+// ============================================================
+const questions = [
+  { q: '🌟 Which is the biggest planet in our solar system?', opts: ['Earth','Jupiter','Saturn','Mars'], ans: 1 },
+  { q: '🔴 Which planet is known as the Red Planet?', opts: ['Venus','Mercury','Mars','Jupiter'], ans: 2 },
+  { q: '🌍 How many moons does Earth have?', opts: ['0','1','2','4'], ans: 1 },
+  { q: '☀️ What is at the center of our Solar System?', opts: ['Earth','Moon','Jupiter','The Sun'], ans: 3 },
+  { q: '🪐 Which planet has the most beautiful rings?', opts: ['Saturn','Uranus','Neptune','Mars'], ans: 0 },
+  { q: '⚫ Which planet is closest to the Sun?', opts: ['Venus','Mercury','Earth','Mars'], ans: 1 },
+  { q: '🌡️ Which is the hottest planet?', opts: ['Mercury','Mars','Venus','Jupiter'], ans: 2 },
+  { q: '🌊 How much of Earth is covered in water?', opts: ['30%','50%','71%','90%'], ans: 2 },
+  { q: '🌀 How long has Jupiter\'s Great Red Spot storm lasted?', opts: ['10 years','50 years','150 years','350+ years'], ans: 3 },
+  { q: '🚀 Which is the farthest planet from the Sun?', opts: ['Saturn','Uranus','Neptune','Mars'], ans: 2 },
+];
+
+let qIndex = 0, score = 0, answered = false;
+const shuffled = [...questions].sort(() => Math.random() - 0.5);
+
+function loadQuestion() {
+  answered = false;
+  const q = shuffled[qIndex % shuffled.length];
+  document.getElementById('quizQuestion').textContent = q.q;
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('nextBtn').style.display = 'none';
+
+  const optDiv = document.getElementById('quizOptions');
+  optDiv.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-btn';
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(i, q.ans);
+    optDiv.appendChild(btn);
+  });
+  document.getElementById('quizScore').textContent = `Score: ${score} / ${qIndex} ⭐`;
+}
+
+function checkAnswer(chosen, correct) {
+  if (answered) return;
+  answered = true;
+  const btns = document.querySelectorAll('.quiz-btn');
+  btns[correct].classList.add('correct');
+  const fb = document.getElementById('quizFeedback');
+  if (chosen === correct) {
+    score++;
+    fb.textContent = '🎉 Awesome! You got it right!';
+    fb.style.color = '#66bb6a';
+    btns[chosen].classList.add('correct');
+  } else {
+    btns[chosen].classList.add('wrong');
+    fb.textContent = '😅 Not quite! The correct answer is highlighted.';
+    fb.style.color = '#ef9a9a';
+  }
+  document.getElementById('quizScore').textContent = `Score: ${score} / ${qIndex+1} ⭐`;
+  document.getElementById('nextBtn').style.display = 'inline-block';
+  qIndex++;
+}
+
+function nextQuestion() { loadQuestion(); }
+
+loadQuestion();
+
+// ============================================================
+// MODAL
+// ============================================================
+function openModal(p) {
+  document.getElementById('modalEmoji').textContent = p.emoji;
+  document.getElementById('modalName').textContent = p.name;
+  document.getElementById('modalName').style.color = planets.find(x=>x.name===p.name)?.color || 'white';
+  document.getElementById('modalDesc').textContent = p.desc;
+
+  const statsDiv = document.getElementById('modalStats');
+  statsDiv.innerHTML = '';
+  Object.entries(p.facts).forEach(([k, v]) => {
+    const row = document.createElement('div');
+    row.className = 'modal-stat';
+    row.innerHTML = `<span>${k}</span><strong>${v}</strong>`;
+    statsDiv.appendChild(row);
+  });
+
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('active');
+  }
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+</script>
+</body>
+</html>
